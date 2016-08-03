@@ -42,14 +42,14 @@ const mapSeries = Promise.mapSeries || function promiseMapSeries(iterable, itera
  * @param iterator
  */
 export function eachComponents(components, iterator) {
-  const l = components.length;
-  for (let i = 0; i < l; i++) {
-    const component = components[i];
+  const objects = [...components];
+  while (objects.length) {
+    const component = objects.shift();
     if (typeof component === 'object') {
       const keys = Object.keys(component);
-      keys.forEach(key => iterator(component[key], i, key));
+      keys.forEach(key => objects.push(component[key]));
     } else {
-      iterator(component, i);
+      iterator(component);
     }
   }
 }
